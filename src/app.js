@@ -4,7 +4,10 @@ const errorHandler = require('./middleware/error.middleware');
 const app = express();
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://*.vercel.app'],
+  origin: [
+    'http://localhost:5173',
+    'https://finance-tracker-ui-mauve.vercel.app'
+  ],
   credentials: true,
 }));
 
