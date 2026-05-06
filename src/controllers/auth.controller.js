@@ -6,6 +6,8 @@ const { z } = require('zod');
 const prisma = new PrismaClient();
 
 const registerSchema = z.object({
+  fullName: z.string().min(2),
+  phone: z.string().min(10),
   email: z.string().email(),
   password: z.string().min(6),
 });
@@ -17,13 +19,12 @@ const loginSchema = z.object({
 
 const register = async (req, res, next) => {
   try {
-    console.log('Register body:', req.body);
     const result = registerSchema.safeParse(req.body);
     if (!result.success) {
       return res.status(400).json({ error: result.error.flatten().fieldErrors });
     }
 
-    const { email, password } = result.data;
+    const { fullName, phone, email, password } = result.data;
 
     const existing = await prisma.user.findUnique({ where: { email } });
     if (existing) {
@@ -32,14 +33,14 @@ const register = async (req, res, next) => {
 
     const hashed = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
-      data: { email, password: hashed },
+      data: { fullName, phone, email, password: hashed },
     });
 
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET, {
       expiresIn: '7d',
     });
 
-    res.status(201).json({ token, userId: user.id });
+    res.status(201).json({ token, userId: user.id, fullName: user.fullName });
   } catch (err) {
     next(err);
   }
@@ -68,7 +69,7 @@ const login = async (req, res, next) => {
       expiresIn: '7d',
     });
 
-    res.json({ token, userId: user.id });
+    res.json({ token, userId: user.id, fullName: user.fullName });
   } catch (err) {
     next(err);
   }
