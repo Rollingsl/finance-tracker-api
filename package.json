@@ -6,7 +6,7 @@
     "dev": "nodemon server.js",
     "postinstall": "npx prisma generate",
     "build": "npx prisma generate",
-    "start": "node server.js"
+    "start": "npx prisma generate && node server.js"
   },
   "keywords": [],
   "author": "",
