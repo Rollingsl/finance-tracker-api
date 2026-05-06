@@ -51,3 +51,82 @@ https://finance-tracker-ui-mauve.vercel.app
 - All amounts displayed in Ugandan Shillings (UGX)
 
 ## Project Structure
+src/
+├── controllers/
+│   ├── auth.controller.js
+│   ├── transaction.controller.js
+│   └── budget.controller.js
+├── middleware/
+│   ├── auth.middleware.js
+│   └── error.middleware.js
+├── routes/
+│   ├── auth.routes.js
+│   ├── transaction.routes.js
+│   └── budget.routes.js
+└── app.js
+prisma/
+└── schema.prisma
+server.js
+
+## API Endpoints
+
+### Auth
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /api/auth/register | Register new user |
+| POST | /api/auth/login | Login and get JWT token |
+
+### Transactions
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /api/transactions | Create a transaction |
+| GET | /api/transactions | Get all transactions |
+| GET | /api/transactions/summary | Get income, expenses, balance |
+| DELETE | /api/transactions/:id | Delete a transaction |
+
+### Budgets
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | /api/budgets | Create a budget |
+| GET | /api/budgets | Get all budgets |
+| GET | /api/budgets/check | Check spending vs budget |
+
+## Getting Started
+
+### Prerequisites
+- Node.js v20+
+- PostgreSQL
+
+### Installation
+```bash
+# Clone the repository
+git clone https://github.com/Rollingsl/finance-tracker-api.git
+
+# Navigate into the project
+cd finance-tracker-api
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env
+# Fill in your DATABASE_URL and JWT_SECRET
+
+# Run database migrations
+npx prisma migrate dev
+
+# Start the development server
+npm run dev
+```
+
+### Environment Variables
+```env
+DATABASE_URL="postgresql://user:password@localhost:5432/finance_tracker"
+JWT_SECRET="your_secret_key"
+PORT=3000
+```
+
+## Database Schema
+- **User** — id, fullName, phone, email, password, createdAt
+- **Transaction** — id, amount, type, category, note, date, userId
+- **Budget** — id, category, limit, month, userId
