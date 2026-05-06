@@ -17,6 +17,7 @@ const loginSchema = z.object({
 
 const register = async (req, res, next) => {
   try {
+    console.log('Register body:', req.body);
     const result = registerSchema.safeParse(req.body);
     if (!result.success) {
       return res.status(400).json({ error: result.error.flatten().fieldErrors });
