@@ -51,20 +51,20 @@ https://finance-tracker-ui-mauve.vercel.app
 - All amounts displayed in Ugandan Shillings (UGX)
 
 ## Project Structure
-src
-├── controllers
+src/
+├── controllers/
 │   ├── auth.controller.js
 │   ├── transaction.controller.js
 │   └── budget.controller.js
-├── middleware
+├── middleware/
 │   ├── auth.middleware.js
 │   └── error.middleware.js
-├── routes
+├── routes/
 │   ├── auth.routes.js
 │   ├── transaction.routes.js
 │   └── budget.routes.js
 └── app.js
-prisma
+prisma/
 └── schema.prisma
 server.js
 
