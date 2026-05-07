@@ -44,4 +44,31 @@ const getSummary = async (req, res) => {
   res.json({ income, expenses, balance: income - expenses });
 };
 
-module.exports = { createTransaction, getTransactions, deleteTransaction, getSummary };
+const updateTransaction = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { amount, category, note, type } = req.body;
+
+    const transaction = await prisma.transaction.findUnique({ where: { id } });
+
+    if (!transaction || transaction.userId !== req.user.userId) {
+      return res.status(404).json({ error: 'Transaction not found' });
+    }
+
+    const updated = await prisma.transaction.update({
+      where: { id },
+      data: {
+        ...(amount && { amount: parseFloat(amount) }),
+        ...(category && { category }),
+        ...(note !== undefined && { note }),
+        ...(type && { type }),
+      },
+    });
+
+    res.json(updated);
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { createTransaction, getTransactions, deleteTransaction, getSummary, updateTransaction };
